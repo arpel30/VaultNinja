@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Vault Ninja</string>
+    <string name="PASSWORD_HINT">Password</string>
 </resources>
