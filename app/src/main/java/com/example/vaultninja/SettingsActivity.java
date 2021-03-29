@@ -3,7 +3,14 @@ package com.example.vaultninja;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.tech.Ndef;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -24,4 +31,6 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
 
     }
+
+
 }
