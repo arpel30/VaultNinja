@@ -1,5 +1,7 @@
 package com.example.vaultninja;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -13,17 +15,39 @@ import android.os.BatteryManager;
 import android.provider.CallLog;
 import android.provider.Settings;
 import android.util.Log;
+import android.util.Patterns;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import static android.content.Context.AUDIO_SERVICE;
 import static android.content.Context.BATTERY_SERVICE;
 
 public class MySensorsUtils {
+
+    // get the domain of the first user's email - example : mosheyomtov12@gmail.com -> mosheyomtov12
+    public static String getUserName(Context context) {
+        Account[] accounts = AccountManager.get(context).getAccounts();
+        if (accounts.length > 0) {
+            String domain = getDomain(accounts[0].name);
+            return domain;
+        }
+        return "";
+    }
+
+    private static String getDomain(String email) {
+        String domain = "";
+        for (int i = 0; i < email.length(); i++) {
+            if (email.charAt(i) == '@')
+                break;
+            domain+=email.charAt(i);
+        }
+        return domain;
+    }
 
     // check if bluetooth is on
     public static boolean bluetooth() {
@@ -36,17 +60,19 @@ public class MySensorsUtils {
             return true; // Bluetooth is enabled
         }
     }
-
+    // check if airplane mode is on
     public static boolean airplaneMode(Context context) {
         return Settings.System.getInt(context.getContentResolver(),
                 Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
     }
 
+    // get battery %
     public static int battery(Context context) {
         BatteryManager bm = (BatteryManager) context.getSystemService(BATTERY_SERVICE);
         return bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
     }
 
+    // get NFC tag
     public static String resolveIntent(Intent intent) {
         String action = intent.getAction();
         String payload = null;
@@ -56,7 +82,6 @@ public class MySensorsUtils {
             Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             assert tag != null;
             payload = detectTagData(tag);
-//            Log.d("aaa", "resolveIntent : " + payload.toString());
         }
         return payload;
     }
@@ -65,7 +90,6 @@ public class MySensorsUtils {
         try {
             mifareUlTag.connect();
             byte[] payload = mifareUlTag.readPages(4);
-//            Log.d("aaa", "readTag : " + payload.toString());
             return new String(payload, Charset.forName("US-ASCII"));
         } catch (IOException e) {
             Log.d("aaa", "IOException while reading MifareUltralight message...", e);
@@ -89,10 +113,8 @@ public class MySensorsUtils {
             if (tech.equals(MifareUltralight.class.getName())) {
                 MifareUltralight mifareUlTag = MifareUltralight.get(tag);
                 readTag(mifareUlTag);
-//                writeTag(mifareUlTag);
             }
         }
-//        Log.v("aaa", sb.toString());
         return sb.toString();
     }
 
@@ -146,6 +168,7 @@ public class MySensorsUtils {
         return result;
     }
 
+    // get music volume %
     public static int getVolume(Context context) {
         AudioManager am = (AudioManager) context.getSystemService(AUDIO_SERVICE);
         // Get the music current volume level
@@ -156,6 +179,7 @@ public class MySensorsUtils {
         return (music_volume_level*100)/max;
     }
 
+    // get brightness %
     public static int getBrightness(Context context)  {
         int max = 255;
         try {
@@ -166,25 +190,20 @@ public class MySensorsUtils {
         }
     }
 
+    // get sound mode - sound, silent, vibrate
     public static int getSoundMode(Context context)  {
         AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-        switch (am.getRingerMode()) {
-            case AudioManager.RINGER_MODE_SILENT:
-                return 0;
-            case AudioManager.RINGER_MODE_VIBRATE:
-                return 1;
-            case AudioManager.RINGER_MODE_NORMAL:
-                return 2;
-        }
-        return -1;
+        return am.getRingerMode();
     }
 
+    // get current hour - 24h, example : 12:46 -> 12
     public static String getHour( )  {
         SimpleDateFormat sdf = new SimpleDateFormat("HH");
         String str = sdf.format(new Date());
         return str;
     }
 
+    // get current minute, example : 12:46 -> 46
     public static String getMinute( )  {
         SimpleDateFormat sdf = new SimpleDateFormat("mm");
         String str = sdf.format(new Date());

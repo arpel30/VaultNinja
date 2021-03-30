@@ -1,9 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/settings_LBL_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Here you can scan NFC locking card"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        />
+
+    <TextView
+        android:id="@+id/settings_LBL_scantxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_centerInParent="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        >
+
+    <Button
+        android:layout_margin="5dp"
+        android:id="@+id/settings_BTN_scan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Scan"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/black"
+        android:textSize="30dp"
+        android:gravity="center"
+        />
+
+        <Button
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:id="@+id/settings_BTN_remove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Remove"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/red"
+            android:textSize="30dp"
+            android:gravity="center"
+            />
+    </LinearLayout>
+</RelativeLayout>
