@@ -1,4 +1,4 @@
-package com.example.vaultninja;
+package com.example.vaultninja.Other;
 
 public class Constants {
     public static final String SP_FILE = "SP_FILE";

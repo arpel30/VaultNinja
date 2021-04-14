@@ -1,26 +1,23 @@
-package com.example.vaultninja;
+package com.example.vaultninja.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.tech.Ndef;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.example.vaultninja.Other.Constants;
+import com.example.vaultninja.Utils.MySPV;
+import com.example.vaultninja.Utils.MySensorsUtils;
+import com.example.vaultninja.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private Gson gson;
     private TextView settings_LBL_txt;
     private TextView settings_LBL_scantxt;
     private Button settings_BTN_scan;
@@ -86,7 +83,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     protected void onPause() {
         super.onPause();
-        //Onpause stop listening
         if (nfcAdapter != null) {
             nfcAdapter.disableForegroundDispatch(this);
         }
@@ -105,5 +101,4 @@ public class SettingsActivity extends AppCompatActivity {
             settings_LBL_scantxt.setText(Constants.HINT_TXT);
         }
     }
-
 }

@@ -1,8 +1,8 @@
-package com.example.vaultninja;
+package com.example.vaultninja.Other;
 
 import android.app.Application;
 
-import com.example.vaultninja.MySPV;
+import com.example.vaultninja.Utils.MySPV;
 
 public class App extends Application {
     @Override

@@ -1,4 +1,4 @@
-package com.example.vaultninja;
+package com.example.vaultninja.Utils;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

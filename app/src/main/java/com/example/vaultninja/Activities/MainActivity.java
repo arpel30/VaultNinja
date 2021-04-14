@@ -1,32 +1,26 @@
-package com.example.vaultninja;
+package com.example.vaultninja.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.MifareClassic;
-import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.provider.CallLog;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.vaultninja.Other.Constants;
+import com.example.vaultninja.Utils.MySPV;
+import com.example.vaultninja.Utils.MySensorsUtils;
+import com.example.vaultninja.R;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViews() {
         //TODO glide images
+        Glide
+                .with(this)
+                .load(R.drawable.vault)
+                .into(main_IMG_vault);
+        Glide
+                .with(this)
+                .load(R.drawable.shuriken)
+                .into(main_IMG_settings);
         main_IMG_settings.setVisibility(View.INVISIBLE);
         main_IMG_settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkPass(String password) {
 
-        // password = username + battery percentage + minutes + hours - user need to scan card, turn off bluetooth, turn on airplane mode, brightness < 50%, soundmode = vibrate and music volume > 50%
+        // password = username + battery percentage + minutes + hours - user need to scan card,
+        // turn off bluetooth, turn on airplane mode, brightness < 50%, soundmode = vibrate and music volume > 50%
         String myPass = "" + MySensorsUtils.getUserName(this) + MySensorsUtils.battery(this) + MySensorsUtils.getMinute() + MySensorsUtils.getHour();
         String cardSavedId = MySPV.getInstance().getString(Constants.NFC_KEY, "def");
         boolean nfc_valid = false;
@@ -100,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 MySensorsUtils.getSoundMode(this) == AudioManager.RINGER_MODE_VIBRATE && MySensorsUtils.getVolume(this) > 50 && nfc_valid) {
             main_IMG_settings.setVisibility(View.VISIBLE);
             isCardScanned = false;
-            Toast.makeText(this, "Phone is unlocked !", Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), "Phone is unlocked !", Toast.LENGTH_SHORT).show();
         } else
             main_IMG_settings.setVisibility(View.INVISIBLE);
     }
@@ -122,10 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onPause() {
         super.onPause();
-        //Onpause stop listening
         if (nfcAdapter != null) {
             nfcAdapter.disableForegroundDispatch(this);
-            Log.d("aaa", "disabled");
         }
     }
 

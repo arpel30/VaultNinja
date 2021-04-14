@@ -1,7 +1,9 @@
-package com.example.vaultninja;
+package com.example.vaultninja.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.example.vaultninja.Other.Constants;
 
 public class MySPV {
     private static MySPV instance;
